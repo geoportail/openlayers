@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- =========================================================== -->
+	<!-- Project Description -->
+	<!-- =========================================================== -->
+	<groupId>openlayers.geoportail</groupId>
+	<artifactId>geoportail-openlayers</artifactId>
+	<packaging>war</packaging>
+	<name>geoportail-openlayers</name>
+	<version>3.0.0-SNAPSHOT</version>
+	<description>OpenLayers fork for Geoportail</description>
+
+	<!-- =========================================================== -->
+	<!-- Project Properties -->
+	<!-- =========================================================== -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<openlayers.src.dir>${basedir}/lib</openlayers.src.dir>
+		<openlayers.theme.dir>${basedir}/theme</openlayers.theme.dir>
+		<openlayers.img.dir>${basedir}/img</openlayers.img.dir>
+		<build.dir>${project.build.outputDirectory}</build.dir>
+	</properties>
+
+	<!-- =========================================================== -->
+	<!-- Dependency Management -->
+	<!-- -->
+	<!-- Scopes -->
+	<!-- * compile : this is the default scope, used if none -->
+	<!-- is specified. Compile dependencies are available -->
+	<!-- in all classpaths. -->
+	<!-- * provided : this is much like compile, but indicates -->
+	<!-- you expect the JDK or a container to provide it. -->
+	<!-- It is in the runtime and test classpaths, but not the -->
+	<!-- compile classpath. -->
+	<!-- * runtime - this scope indicates that the dependency -->
+	<!-- is not required for compilation, but is for execution. -->
+	<!-- It is in the runtime and test classpaths, but not the -->
+	<!-- compile classpath. -->
+	<!-- * test - this scope indicates that the dependency is -->
+	<!-- not required for normal use of the application, and -->
+	<!-- is only available for the test compilation and -->
+	<!-- execution phases. -->
+	<!-- * system - this scope is similar to provided except -->
+	<!-- that you have to provide the JAR which contains -->
+	<!-- it explicitly. The artifact is always available -->
+	<!-- and is not looked up in a repository. -->
+	<!-- -->
+	<!-- =========================================================== -->
+	<dependencies>
+		<dependency>
+			<groupId>com.yahoo.platform.yui</groupId>
+			<artifactId>yuicompressor</artifactId>
+			<version>2.3.6</version>
+			<type>jar</type>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<!-- =========================================================== -->
+	<!-- Build configuration -->
+	<!-- =========================================================== -->
+	<url></url>
+	<build>
+		<!-- WAR Final name -->
+		<finalName>geoportail-openlayers</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<configuration>
+							<target>
+								<ant antfile="${basedir}/build.xml">
+									<target name="package-js" />
+								</ant>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

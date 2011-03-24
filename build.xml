@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project name="geoportail-openlayers">
+
+	<import file="configs-build.xml" />
+
+	<macrodef name="merge-js">
+		<attribute name="destfile" />
+		<attribute name="path" />
+		<sequential>
+			<echo message="creating @{destfile}" />
+			<concat destfile="@{destfile}">
+				<path refid="@{path}" />
+			</concat>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="compress-js">
+		<attribute name="dir" />
+		<attribute name="includes" />
+		<sequential>
+			<echo message="compressing @{includes}" />
+			<apply executable="java" parallel="false" failonerror="true" verbose="true" dest="@{dir}">
+				<fileset dir="@{dir}" includes="@{includes}" excludes="*-min.js" />
+				<arg line="-jar" />
+				<arg path="${com.yahoo.platform.yui:yuicompressor:jar}" />
+				<arg line="--type js" />
+				<srcfile />
+				<arg line="-o" />
+				<mapper type="glob" from="@{includes}" to="*-min.js" />
+				<targetfile />
+			</apply>
+		</sequential>
+	</macrodef>
+
+	<target name="merge">
+		<merge-js destfile="${build.dir}/openlayers.js" path="openlayers.standard.files" />
+		<merge-js destfile="${build.dir}/openlayers-full.js" path="openlayers.full.files" />
+		<merge-js destfile="${build.dir}/openlayers-lite.js" path="openlayers.lite.files" />
+	</target>
+
+	<target name="compress" depends="merge">
+		<compress-js dir="${build.dir}" includes="*.js" />
+	</target>
+
+	<target name="package-js" depends="merge,compress" />
+
+</project>
